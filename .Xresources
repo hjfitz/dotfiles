@@ -1,0 +1,42 @@
+!! Extentions/rice
+URxvt.termName: rxvt-256color
+URxvt.inheritPixmap: False
+URxvt.imLocale: pl_PL.UTF-8
+URxvt.shading: 75
+!URxvt.perl-ext-common:  default,matcher,vtwheel
+URxvt.url-launcher:      /usr/bin/luakit
+URxvt.matcher.button:   1
+URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+!! URxvt.depth: 32
+URxvt.scrollBar: false
+URxvt.font: -doid-*-*-*-*-*-*-*-*-*-*-*-*-*
+URxvt.boldFont:-doid-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+!! terminal colours
+URxvt.background:#1c1c1c
+URxvt.foreground:#a0a0a0
+!black
+URxvt.color8:    #2b2d2e
+URxvt.color0:    #2f3133
+!red
+URxvt.color1:    #924944
+URxvt.color9:    #d4746a
+!green
+URxvt.color2:    #708742
+URxvt.color10:   #aac27e
+!yellow
+URxvt.color3:    #a06e53
+URxvt.color11:   #bd9681
+!blue
+URxvt.color4:    #6493b5
+URxvt.color12:   #8fb1c9
+!magenta
+URxvt.color5:    #754f8a
+URxvt.color13:   #9d78b2
+!cyan
+URxvt.color6:    #6eb0b5
+URxvt.color14:   #97c6c9
+!white
+URxvt.color7:    #747474
+URxvt.color15:   #8f8f8f
+
