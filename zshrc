@@ -1,56 +1,66 @@
-# environment vars
-export ZSH=/Users/harry/.oh-my-zsh
-export GOPATH=$HOME/git:$HOME/.go:$GOPATH
-export PATH=$HOME/bin:/usr/local/bin:$GOPATH.bin:$PATH
-export HEROKU_ORGANIZATION=elilillyco
+#########################################################################
+#                                                                       #                                                               
+#    _____    __ _____    _____ _____ _____    _____     _              #
+#   |  |  |__|  |   __|  |__   |   __|  |  |  |   __|___| |_ _ _ ___    #
+#   |     |  |  |   __|  |   __|__   |     |  |__   | -_|  _| | | . |   #
+#   |__|__|_____|__|     |_____|_____|__|__|  |_____|___|_| |___|  _|   #
+#                                                               |_|     #
+#                                                                       #
+#########################################################################
 
-# omzsh config
-ZSH_THEME="aussiegeek"
-HYPHEN_INSENSITIVE="true"
 
-plugins=(
-  git
-  yarn
-  node
-  osx
-  brew
-  npm
-)
+# ENVIRONMENT
+export PATH=$HOME/.bin:$HOME/.local/bin:$PATH
+export ZSH=/home/hjf/.oh-my-zsh
+export GOPATH=$HOME/.go
 
-# setup zsh functions
+
+# ZSH Config
 source $ZSH/oh-my-zsh.sh
-source /Users/harry/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_THEME="avit"
+CASE_SENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+plugins=(git node bower github jsontools npm ubuntu nyan)
 
-# alias'
-alias zshc="vim ~/.zshrc"
-alias gcl="git stash save && git stash clear"
-alias g=git
-alias "git fetch"="git fetch --verbose"
+
+# ALIAS'
+alias upd="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt clean && notify-send \"updates complete\""
+alias mdpdf="md-to-pdf"
+alias r="sudo -i"
+alias sude="sudo -E"
+alias pip=pip3
+alias py=python3
 alias gs='git status'
-alias pg=postgres
-alias 'hl'='heroku login --sso'
-alias h=heroku
-alias c="code-insiders"
+alias ga='git add'
+alias gb='git checkout -b'
+alias gc='git checkout'
+alias 'npm install --save'='yarn add'
+alias 'npm install --save-dev'='yarn add --dev'
+alias 'npm uninstall --save'='yarn remove'
+alias 'npm install'='yarn add'
 
-# larger functions
-function gp() {
-  git add .
-  git commit -m "$@"
-  git push
-}
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# Syntax highlighting
+source /home/hjf/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor pattern)
+ZSH_HIGHLIGHT_STYLES[command]='fg=cyan'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan'
+ZSH_HIGHLIGHT_PATTERNS+=('rm*-rf*' 'fg=red,bold')
+ZSH_HIGHLIGHT_PATTERNS+=('sudo rm*-rf*' 'fg=white,bold,bg=red')
 
+
+# NVM 
 export NVM_DIR="$HOME/.nvm"
-
-# nvm setup
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fpath=($fpath "/home/harry/.zfunctions")
 
-# pyenv setup
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
+# Spaceship config
+autoload -U promptinit; promptinit
+prompt spaceship
+SPACESHIP_BATTERY_THRESHOLD=75
+SPACESHIP_PROMPT_ORDER=(time user dir host git node docker line_sep battery jobs exit_code char)
