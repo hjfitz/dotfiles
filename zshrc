@@ -10,9 +10,11 @@
 
 
 # ENVIRONMENT
-export PATH=$HOME/.bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/.bin:$HOME/.local/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH
 export ZSH=/home/hjf/.oh-my-zsh
 export GOPATH=$HOME/.go
+
+ZSH_THEME="juanghurtado"
 
 
 # ZSH Config
@@ -22,10 +24,13 @@ CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-plugins=(git node bower github jsontools npm ubuntu nyan)
+plugins=(git node github jsontools npm ubuntu)
 
 
 # ALIAS'
+alias vimrc="nvim ~/.vimrc"
+alias zshrc="nvim ~/.zshrc"
+alias vim=nvim
 alias upd="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt clean && notify-send \"updates complete\""
 alias mdpdf="md-to-pdf"
 alias r="sudo -i"
@@ -36,6 +41,7 @@ alias gs='git status'
 alias ga='git add'
 alias gb='git checkout -b'
 alias gc='git checkout'
+alias yarn='yarnpkg'
 alias 'npm install --save'='yarn add'
 alias 'npm install --save-dev'='yarn add --dev'
 alias 'npm uninstall --save'='yarn remove'
@@ -59,8 +65,3 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 fpath=($fpath "/home/harry/.zfunctions")
 
-# Spaceship config
-autoload -U promptinit; promptinit
-prompt spaceship
-SPACESHIP_BATTERY_THRESHOLD=75
-SPACESHIP_PROMPT_ORDER=(time user dir host git node docker line_sep battery jobs exit_code char)
