@@ -1,4 +1,5 @@
 set rnu
+set nu
 syntax on
 filetype plugin on
 
@@ -9,6 +10,8 @@ set tabstop=4
 set shiftwidth=4
 set ignorecase
 set smartcase
+set ttimeoutlen=5
+set mouse=a
 
 
 set cc=80
@@ -28,8 +31,20 @@ Plug 'kevinoid/vim-jsonc'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'ryanoasis/vim-devicons'
+Plug 'sainnhe/sonokai'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
 
 call plug#end()
+
+
+let g:sonokai_style = 'shusia'
+let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
+let g:airline_theme = 'sonokai'
+colorscheme sonokai
+
+
 
 map <C-n> :NERDTreeToggle<CR>
 map <C-j> <C-W>j
