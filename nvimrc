@@ -1,69 +1,121 @@
+" general settings
+set nocompatible
 set rnu
 set nu
-syntax on
-filetype plugin on
-
-set scrolloff=3
-set autoindent
-set noexpandtab
-set tabstop=4
-set shiftwidth=4
-set ignorecase
-set smartcase
-set ttimeoutlen=5
+set splitright
+set splitbelow
+set scrolloff=4
+set encoding=UTF-8
+set ttimeoutlen=50
+set nowrap
 set mouse=a
+syntax on
+filetype plugin indent on
+colorscheme wallaby
+
+set backupdir=~/.backup/,/tmp//
+set directory=~/.swp/,/tmp//
+set undodir=~/.undo/,/tmp//
+
+set tabstop=4
+set softtabstop=0 noexpandtab
+set shiftwidth=4
+set colorcolumn=80
+
+set cursorline
+set cursorcolumn
 
 
-set cc=80
-highlight ColorColumn ctermbg=darkgrey
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+cnoreabbrev W w
+cnoreabbrev Q q
 
 
+let g:coc_disable_startup_warning = 1
+let g:airline_powerline_fonts = 1
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ruanyl/vim-fixmyjs'
-Plug 'kevinoid/vim-jsonc'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'vim-syntastic/syntastic'
+Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mhinz/vim-signify'
 Plug 'ryanoasis/vim-devicons'
 Plug 'sainnhe/sonokai'
-Plug 'yuezk/vim-js'
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'preservim/nerdtree'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'kdheepak/tabline.nvim'
+Plug 'github/copilot.vim'
+Plug 'glepnir/dashboard-nvim'
+
+" plugend (quick jump!)
 
 call plug#end()
 
-
-let g:sonokai_style = 'shusia'
-let g:sonokai_enable_italic = 1
-let g:sonokai_disable_italic_comment = 1
 let g:airline_theme = 'sonokai'
+let g:sonokai_style = 'andromeda'
+let g:sonokai_enable_italic = 1
+let g:dashboard_default_executive ='fzf'
+
 colorscheme sonokai
 
+map fz :GFiles<CR>
+map ff :Files<CR>
 
+nnoremap tl :tabnext<CR>
+nnoremap th :tabprev<CR>
+nnoremap tn :tabnew<CR>
+nnoremap <leader>1 1gt
+nnoremap <leader>2 2gt
+nnoremap <leader>3 3gt
+nnoremap <leader>4 4gt
+nnoremap <leader>5 5gt
+
+nnoremap sf :sp<CR>
+nnoremap ss :vs<CR>
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 map <C-n> :NERDTreeToggle<CR>
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Start NERDTree
-autocmd VimEnter * NERDTree
-" Jump to the main window.
-autocmd VimEnter * wincmd p
-
-
+autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 let NERDTreeShowHidden=1
-let NerdTreeIgnore=['.git']
 
-hi Pmenu ctermbg=black ctermfg=white
+let g:WebDevIconsOS = 'Darwin'
+let g:fixmyjs_engine = 'eslint'
+
+
+nnoremap gb :buffers<CR>:buffer<Space>
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap ,; <C-w>v
+nnoremap ,' <C-w>s
+noremap <C-f> :Fixmyjs<CR>
+
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.jsonc set syntax=json
+autocmd BufNewFile,BufRead .babelrc set syntax=json
+autocmd BufNewFile,BufRead *.pcss set syntax=scss
 
 " TextEdit might fail if hidden is not set.
 set hidden
