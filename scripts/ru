@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Sometimes we lose track of origin. 
+# This script naively reattaches it
+# Usage: `ru`
+# Harry Fitzgerald <harry@hjf.io> 2022
+
+git status >/dev/null 2>&1
+
+if [[ $? -ne 0 ]]; then
+	echo "Not in a git project. Exiting" >&2
+	exit 1
+fi
+
+cur_branch=$(git branch | grep '*' | cut -d ' ' -f2)
+
+git branch --set-upstream-to=origin/$cur_branch

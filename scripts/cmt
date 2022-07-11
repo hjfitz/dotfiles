@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Gets the jira ticket and prepends your git commit with it
+# Usage: `cmt "some descriptive commit"`
+# Harry Fitzgerald <harry@hjf.io> 2022
+
+cur_branch=$(git rev-parse --abbrev-ref HEAD | egrep -o "[a-zA-Z]{2,}-[0-9]{2,}")
+
+git commit -m "$cur_branch: $@" --no-verify
