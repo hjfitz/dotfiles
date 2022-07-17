@@ -1,18 +1,27 @@
 require("user.plugins")
 require("user.ts-config")
 
+
 vim.wo.rnu = true
+vim.wo.nu = true
+vim.wo.colorcolumn = '80'
+vim.cmd('colorscheme PaperColor')
+vim.cmd('hi Normal ctermbg=NONE')
+vim.o.mouse = 'a'
+vim.o.scrolloff = 4
+vim.o.signcolumn = 'yes'
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.cursorline = true
 
 
 vim.o.completeopt = "menu,menuone,noselect"
-
--- remaps
-
+vim.o.cursorcolumn = true
 
 
 vim.api.nvim_set_keymap('n', 'ff',
-    "<cmd>lua require('fzf-lua').files()<CR>",
-    { noremap = true, silent = true }
+	"<cmd>lua require('fzf-lua').files()<CR>",
+	{ noremap = true, silent = true }
 )
 
 vim.api.nvim_set_keymap('n', 'ss', ':vsplit<CR>', { noremap = true })
@@ -26,8 +35,12 @@ vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
 
+
+--
 -- Setup nvim-cmp.
 local cmp = require'cmp'
+local luasnip = require'luasnip'
+
 cmp.setup({
 	snippet = {
 		expand = function(args)
@@ -52,6 +65,7 @@ cmp.setup({
 			else
 				fallback()
 			end
+
 		end,
 		['<S-Tab>'] = function(fallback)
 			if cmp.visible() then
@@ -65,10 +79,7 @@ cmp.setup({
 	}),
 	sources = cmp.config.sources({
 		{ name = 'nvim_lsp' },
-		{ name = 'vsnip' }, -- For vsnip users.
-		-- { name = 'luasnip' }, -- For luasnip users.
-		-- { name = 'ultisnips' }, -- For ultisnips users.
-		-- { name = 'snippy' }, -- For snippy users.
+		{ name = 'luasnip' }, 
 	}, {
 		{ name = 'buffer' },
 	})
@@ -100,4 +111,7 @@ cmp.setup.cmdline(':', {
 		{ name = 'cmdline' }
 	})
 })
+
+
+require'lspconfig'.rust_analyzer.setup{}
 

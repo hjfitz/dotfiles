@@ -1,5 +1,4 @@
 local fn = vim.fn
-
 -- Automatically install packer
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
@@ -45,16 +44,22 @@ return packer.startup(function(use)
 	use 'hrsh7th/cmp-path'
 	use 'hrsh7th/cmp-cmdline'
 	use 'hrsh7th/nvim-cmp'
-	use 'hrsh7th/cmp-vsnip'
-	use 'hrsh7th/vim-vsnip'
 	use 'ibhagwan/fzf-lua'
+	use 'NLKNguyen/papercolor-theme'
+	use 'L3MON4D3/LuaSnip'
 	use {
-		'kyazdani42/nvim-tree.lua',
-		requires = {
-			'kyazdani42/nvim-web-devicons', -- optional, for file icons
-		},
-		tag = 'nightly' -- optional, updated every week. (see issue #1193)
+	    'kyazdani42/nvim-tree.lua',
+	    requires = {
+		    'kyazdani42/nvim-web-devicons', -- optional, for file icons
+	    },
+	    tag = 'nightly' -- optional, updated every week. (see issue #1193)
 	}
+	use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
+
+	
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
@@ -65,3 +70,5 @@ return packer.startup(function(use)
 	require("nvim-tree").setup()
 
 end)
+
+

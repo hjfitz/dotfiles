@@ -1,5 +1,8 @@
 local lspconfig = require("lspconfig")
 local null_ls = require("null-ls")
+
+
+
 local buf_map = function(bufnr, mode, lhs, rhs, opts)
     vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts or {
         silent = true,
@@ -31,6 +34,7 @@ local on_attach = function(client, bufnr)
         vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
     end
 end
+
 lspconfig.tsserver.setup({
     on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
@@ -44,10 +48,13 @@ lspconfig.tsserver.setup({
         on_attach(client, bufnr)
     end,
 })
+
 null_ls.setup({
     sources = {
-        null_ls.builtins.diagnostics.eslint,
-        null_ls.builtins.code_actions.eslint,
+		null_ls.builtins.code_actions.eslint_d,
+		null_ls.builtins.diagnostics.eslint_d,
+		null_ls.builtins.formatting.eslint_d,
     },
     on_attach = on_attach,
 })
+
