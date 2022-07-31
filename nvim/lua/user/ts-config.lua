@@ -8,6 +8,7 @@ local buf_map = function(bufnr, mode, lhs, rhs, opts)
         silent = true,
     })
 end
+
 local on_attach = function(client, bufnr)
     vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
     vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
