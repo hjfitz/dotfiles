@@ -2,10 +2,10 @@ require("user.plugins")
 require("user.ts-config")
 require("user.rust-config")
 
-
 vim.wo.rnu = true
 vim.wo.nu = true
 vim.wo.colorcolumn = '80'
+vim.o.nowrap = true
 vim.cmd('colorscheme PaperColor')
 vim.cmd('hi Normal ctermbg=NONE')
 vim.o.mouse = 'a'
@@ -14,6 +14,7 @@ vim.o.signcolumn = 'yes'
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.cursorline = true
+vim.g.mapleader = ' '
 
 
 vim.o.completeopt = "menu,menuone,noselect"
@@ -29,12 +30,13 @@ vim.api.nvim_set_keymap('n', 'ss', ':vsplit<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'sf', ':split<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'tn', ':tabnew<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'tl', ':tabnext<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'tn', ':tabprev<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true })
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true })
+vim.api.nvim_set_keymap('n', 'th', ':tabprev<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Leader>h', '<C-w>h', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Leader>j', '<C-w>j', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Leader>k', '<C-w>k', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Leader>l', '<C-w>l', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
+
 
 
 --
