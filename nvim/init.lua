@@ -1,6 +1,7 @@
 require("user.plugins")
 require("user.ts-config")
 require("user.rust-config")
+local neogit = require('neogit')
 
 vim.wo.rnu = true
 vim.wo.nu = true
@@ -36,6 +37,7 @@ vim.api.nvim_set_keymap('n', '<Leader>j', '<C-w>j', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Leader>k', '<C-w>k', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Leader>l', '<C-w>l', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', 'gs', ':Neogit<CR>', { noremap = true })
 
 
 
@@ -61,7 +63,7 @@ cmp.setup({
 		['<C-Space>'] = cmp.mapping.complete(),
 		['<C-e>'] = cmp.mapping.abort(),
 		['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-		['<Tab>'] = function(fallback)
+		['<C-n>'] = function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
 			elseif luasnip.expand_or_jumpable() then
@@ -71,7 +73,7 @@ cmp.setup({
 			end
 
 		end,
-		['<S-Tab>'] = function(fallback)
+		['<C-p>'] = function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then
@@ -116,3 +118,4 @@ cmp.setup.cmdline(':', {
 	})
 })
 
+neogit.setup {}
