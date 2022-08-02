@@ -6,7 +6,7 @@ local neogit = require('neogit')
 vim.wo.rnu = true
 vim.wo.nu = true
 vim.wo.colorcolumn = '80'
-vim.o.nowrap = true
+--vim.o.nowrap = true
 vim.cmd('colorscheme PaperColor')
 vim.cmd('hi Normal ctermbg=NONE')
 vim.o.mouse = 'a'
