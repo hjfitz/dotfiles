@@ -49,6 +49,7 @@ return packer.startup(function(use)
 	use 'L3MON4D3/LuaSnip'
 	use 'simrat39/rust-tools.nvim'
 	use 'TimUntersberger/neogit'
+	use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 	use {
 	    'kyazdani42/nvim-tree.lua',
 	    requires = {

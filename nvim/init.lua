@@ -118,4 +118,8 @@ cmp.setup.cmdline(':', {
 	})
 })
 
-neogit.setup {}
+neogit.setup {
+	integrations = {
+		diffview = true
+	}
+}
