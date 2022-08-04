@@ -22,11 +22,15 @@ vim.o.completeopt = "menu,menuone,noselect"
 vim.o.cursorcolumn = true
 
 
+--[[
 vim.api.nvim_set_keymap('n', 'ff',
 	"<cmd>lua require('fzf-lua').files()<CR>",
 	{ noremap = true, silent = true }
 )
+--]]
 
+vim.api.nvim_set_keymap('n', 'ff', '<cmd>Telescope find_files<cr>', {noremap = true})
+vim.api.nvim_set_keymap('n', 'fg', '<cmd>Telescope live_grep<cr>', {noremap = true})
 vim.api.nvim_set_keymap('n', 'ss', ':vsplit<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'sf', ':split<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'tn', ':tabnew<CR>', { noremap = true })
@@ -123,3 +127,6 @@ neogit.setup {
 		diffview = true
 	}
 }
+
+require'lspconfig'.graphql.setup{}
+

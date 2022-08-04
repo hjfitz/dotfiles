@@ -49,7 +49,9 @@ return packer.startup(function(use)
 	use 'L3MON4D3/LuaSnip'
 	use 'simrat39/rust-tools.nvim'
 	use 'TimUntersberger/neogit'
+	use 'jparise/vim-graphql'
 	use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' }
 	use {
 	    'kyazdani42/nvim-tree.lua',
 	    requires = {
