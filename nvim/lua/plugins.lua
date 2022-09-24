@@ -17,6 +17,12 @@ if not status_ok then
 	return
 end
 
+
+-- todo: find a better place for this
+vim.cmd('let g:airline#extensions#tabline#enabled = 1')
+vim.cmd("let g:airline_theme='bubblegum'")
+vim.cmd('let g:airline_powerline_fonts = 1')
+
 packer.init({
 		display = {
 			open_fn = function()
@@ -28,28 +34,44 @@ packer.init({
 
 return packer.startup(function(use)
 	use 'wbthomason/packer.nvim' 
+
+	use {
+	  'VonHeikemen/lsp-zero.nvim',
+	  requires = {
+		-- LSP Support
+		{'neovim/nvim-lspconfig'},
+		{'williamboman/mason.nvim'},
+		{'williamboman/mason-lspconfig.nvim'},
+
+		-- Autocompletion
+		{'hrsh7th/nvim-cmp'},
+		{'hrsh7th/cmp-buffer'},
+		{'hrsh7th/cmp-path'},
+		{'saadparwaiz1/cmp_luasnip'},
+		{'hrsh7th/cmp-nvim-lsp'},
+		{'hrsh7th/cmp-nvim-lua'},
+
+		-- Snippets
+		{'L3MON4D3/LuaSnip'},
+		{'rafamadriz/friendly-snippets'},
+	  }
+	}
+
 	use "nvim-lua/popup.nvim" 
 	use "nvim-lua/plenary.nvim" 
-	use {
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-		"neovim/nvim-lspconfig",
-	}
 	use "jose-elias-alvarez/null-ls.nvim"
 	use "jose-elias-alvarez/nvim-lsp-ts-utils"
-	use 'hrsh7th/cmp-nvim-lsp'
-	use 'hrsh7th/cmp-buffer'
-	use 'hrsh7th/cmp-path'
 	use 'hrsh7th/cmp-cmdline'
-	use 'hrsh7th/nvim-cmp'
 	use 'ibhagwan/fzf-lua'
 	use 'NLKNguyen/papercolor-theme'
-	use 'L3MON4D3/LuaSnip'
 	use 'simrat39/rust-tools.nvim'
 	use 'TimUntersberger/neogit'
 	use 'jxnblk/vim-mdx-js'
 	use 'jparise/vim-graphql'
 	use 'mfussenegger/nvim-dap'
+	use 'yorinasub17/vim-terragrunt'
+	use 'hashivim/vim-terraform'
+	use 'juliosueiras/vim-terraform-completion'
 	use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' }
 	use {
@@ -63,6 +85,13 @@ return packer.startup(function(use)
 		run = ':TSUpdate'
 	}
 
+	use {
+		'vim-airline/vim-airline',
+		'vim-airline/vim-airline-themes'
+	}
+	use "onsails/lspkind-nvim"  -- vscode-like pictogramsplugins
+	use "editorconfig/editorconfig-vim"
+
 	if PACKER_BOOTSTRAP then
 		require('packer').sync()
 	end
@@ -71,6 +100,5 @@ return packer.startup(function(use)
 	require("mason").setup()
 
 end)
-
 
 
