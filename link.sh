@@ -8,5 +8,6 @@ ln -s $(pwd)/tmux.conf ~/.tmux.conf
 
 echo "Linking zshrc"
 ln -s $(pwd)/shell/zshrc ~/.zshrc
+ln -s $(pwd)/shell/telemetry.sh ~/.telemetry.sh
 
 ln -s $(pwd)/shell/rg.conf ~/.rg.conf

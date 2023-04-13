@@ -17,6 +17,9 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export TF_VAR_env_file=sandpit
 export RIPGREP_CONFIG_PATH=$HOME/.rg.conf
 
+source ~/.telemetry.sh
+
+
 # ZSH Config
 ZSH_THEME="avit"
 source $ZSH/oh-my-zsh.sh

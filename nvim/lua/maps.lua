@@ -15,4 +15,4 @@ vim.api.nvim_set_keymap('n', '<Leader>q', ':vertical resize +10<CR>', { noremap 
 vim.api.nvim_set_keymap('n', '<Leader>r', ':vertical resize -10<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Leader>e', ':resize +10<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Leader>w', ':resize -10<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true })
+--vim.api.nvim_set_keymap('n', '<Leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true })
