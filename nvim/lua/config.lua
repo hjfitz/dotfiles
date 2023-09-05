@@ -1,4 +1,3 @@
-
 vim.cmd('colorscheme PaperColor')
 vim.cmd('hi Normal ctermbg=NONE')
 vim.cmd('set nowrap')

@@ -20,7 +20,7 @@ lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr}
 
   vim.keymap.set({'n', 'x'}, '<Leader>f', function()
-	vim.api.nvim_command('EslintFixAll')
+    vim.api.nvim_command('EslintFixAll')
     vim.lsp.buf.format({
       async = false,
       timeout_ms = 10000,

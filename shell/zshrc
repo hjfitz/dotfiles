@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 #########################################################################
 #                                                                       #
 #    _____    __ _____    _____ _____ _____    _____     _              #
@@ -22,6 +24,7 @@ source ~/.telemetry.sh
 
 # ZSH Config
 ZSH_THEME="avit"
+#ZSH_THEME="spaceship"
 source $ZSH/oh-my-zsh.sh
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
@@ -42,8 +45,7 @@ function v() {
 }
 
 function rslogin() {
-	awsume rs-cni-shared
-	vault login -method=oidc -path=rs_azure_ad
+	awsume rs-cni-shared && vault login -method=oidc -path=rs_azure_ad
 }
 
 # ALIAS'
@@ -77,9 +79,11 @@ alias cpc="pbcopy"
 alias tgl="TF_CMD=terragrunt tflocal"
 alias rgg="rg --files | rg $1"
 alias pnp="cd ~/code/rs-devsecops/rs-dev/api-platform/product-and-price"
+alias tflint="tflint -c ~/.tflint.hcl"
 
 # Syntax highlighting
-source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source $HOME/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor pattern)
 ZSH_HIGHLIGHT_STYLES[command]='fg=cyan'
@@ -110,3 +114,20 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+
+complete -o nospace -C /opt/homebrew/bin/vault vault
+
+export PATH="$HOME/.tgenv/bin:$HOME/.fig/bin:$PATH"
+export TERRAGRUNT_DISABLE_BUCKET_UPDATE=true
+export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+
+
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+
+
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions

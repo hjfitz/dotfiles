@@ -52,8 +52,8 @@ return packer.startup(function(use)
 		{'hrsh7th/cmp-nvim-lua'},
 
 		-- Snippets
-		{'L3MON4D3/LuaSnip'},
-		{'rafamadriz/friendly-snippets'},
+		--{'L3MON4D3/LuaSnip'},
+		--{'rafamadriz/friendly-snippets'},
 	  }
 	}
 
@@ -72,6 +72,7 @@ return packer.startup(function(use)
 	use 'yorinasub17/vim-terragrunt'
 	use 'hashivim/vim-terraform'
 	use 'juliosueiras/vim-terraform-completion'
+	use 'evanleck/vim-svelte'
 	use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.0' }
 	use {
@@ -91,6 +92,7 @@ return packer.startup(function(use)
 	}
 	use "onsails/lspkind-nvim"  -- vscode-like pictogramsplugins
 	use "editorconfig/editorconfig-vim"
+	use "github/copilot.vim"
 
 	if PACKER_BOOTSTRAP then
 		require('packer').sync()
@@ -100,5 +102,4 @@ return packer.startup(function(use)
 	require("mason").setup()
 
 end)
-
 

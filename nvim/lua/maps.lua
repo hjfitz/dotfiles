@@ -16,3 +16,7 @@ vim.api.nvim_set_keymap('n', '<Leader>r', ':vertical resize -10<CR>', { noremap 
 vim.api.nvim_set_keymap('n', '<Leader>e', ':resize +10<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Leader>w', ':resize -10<CR>', { noremap = true })
 --vim.api.nvim_set_keymap('n', '<Leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true })
+
+vim.g['copilot_no_tab_map'] = true
+vim.g['copilot_assume_mapped'] = true
+vim.api.nvim_set_keymap('i', '<C-h>', 'copilot#Accept("<CR>")', {expr=true, silent=true})
