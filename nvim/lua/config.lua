@@ -1,4 +1,5 @@
 vim.cmd('colorscheme PaperColor')
+--vim.cmd('colorscheme atlas')
 vim.cmd('hi Normal ctermbg=NONE')
 vim.cmd('set nowrap')
 
@@ -6,8 +7,8 @@ vim.wo.rnu = true
 vim.wo.nu = true
 vim.wo.colorcolumn = '80'
 
--- vim.opt.tabstop = 4
-vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
+--vim.opt.shiftwidth = 2
 vim.opt.cursorline = true
 vim.opt.signcolumn = 'yes' -- Reserve space for diagnostic icons
 

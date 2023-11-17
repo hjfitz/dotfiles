@@ -12,21 +12,23 @@ lsp.ensure_installed({
 })
 
 local function allow_format(servers)
-  return function(client) return vim.tbl_contains(servers, client.name) end
+	return function(client) return vim.tbl_contains(servers, client.name) end
 end
 
 lsp.on_attach(function(client, bufnr)
-  lsp.default_keymaps({buffer = bufnr})
-  local opts = {buffer = bufnr}
+	lsp.default_keymaps({ buffer = bufnr })
+	local opts = { buffer = bufnr }
 
-  vim.keymap.set({'n', 'x'}, '<Leader>f', function()
-    vim.api.nvim_command('EslintFixAll')
-    vim.lsp.buf.format({
-      async = false,
-      timeout_ms = 10000,
-      filter = allow_format({'lua_ls', 'rust_analyzer'})
-    })
-  end, opts)
+	vim.keymap.set({ 'n', 'x' }, '<Leader>f', function()
+		pcall(function()
+			vim.api.nvim_command('EslintFixAll')
+		end)
+		vim.lsp.buf.format({
+			async = false,
+			timeout_ms = 10000,
+			filter = allow_format({ 'lua_ls', 'rust_analyzer', 'gopls', 'xmlformatter' })
+		})
+	end, opts)
 end)
 
 lsp.setup()

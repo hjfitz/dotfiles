@@ -27,6 +27,8 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
+autoload -Uz compinit
+compinit
 
 # ZSH Config
 ZSH_THEME="avit"
@@ -88,6 +90,11 @@ alias tgl="TF_CMD=terragrunt tflocal"
 alias rgg="rg --files | rg $1"
 alias pnp="cd ~/code/rs-devsecops/rs-dev/api-platform/product-and-price"
 alias tflint="tflint -c ~/.tflint.hcl"
+alias ls="ls --color=auto"
+alias la="ls -la"
+alias ll="ls -l"
+alias l="ls -l"
+
 
 # Syntax highlighting
 #source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -139,3 +146,5 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
+
+[[ -s "/Users/e0668400/.gvm/scripts/gvm" ]] && source "/Users/e0668400/.gvm/scripts/gvm"
