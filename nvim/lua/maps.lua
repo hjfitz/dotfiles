@@ -19,4 +19,4 @@ vim.api.nvim_set_keymap('n', '<Leader>w', ':resize -10<CR>', { noremap = true })
 
 vim.g['copilot_no_tab_map'] = true
 vim.g['copilot_assume_mapped'] = true
-vim.api.nvim_set_keymap('i', '<C-h>', 'copilot#Accept("<CR>")', {expr=true, silent=true})
+vim.api.nvim_set_keymap('i', '<C-h>', 'copilot#Accept("<CR>")', { expr = true, silent = true })

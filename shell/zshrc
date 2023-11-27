@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 #########################################################################
 #                                                                       #
 #    _____    __ _____    _____ _____ _____    _____     _              #
@@ -89,11 +91,18 @@ alias cpc="pbcopy"
 alias tgl="TF_CMD=terragrunt tflocal"
 alias rgg="rg --files | rg $1"
 alias pnp="cd ~/code/rs-devsecops/rs-dev/api-platform/product-and-price"
+alias dms="cd ~/code/rs-devsecops/rs-dev/titan/dms/"
 alias tflint="tflint -c ~/.tflint.hcl"
 alias ls="ls --color=auto"
 alias la="ls -la"
 alias ll="ls -l"
 alias l="ls -l"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias tfp="cd .deploy/resources/projects"
+alias tfj="cd ../../../../.."
 
 
 # Syntax highlighting
@@ -148,3 +157,6 @@ zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 
 [[ -s "/Users/e0668400/.gvm/scripts/gvm" ]] && source "/Users/e0668400/.gvm/scripts/gvm"
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

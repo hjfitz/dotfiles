@@ -20,4 +20,3 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 4
 vim.o.signcolumn = 'yes'
 vim.o.clipboard = 'unnamed'
-
