@@ -30,10 +30,9 @@ packer.init({
 			return require('packer.util').float({ border = 'single' })
 		end
 	}
-}
-)
+})
 
-return packer.startup(function(use)
+packer.startup(function(use)
 	use 'wbthomason/packer.nvim'
 	use 'huyvohcmc/atlas.vim'
 
@@ -91,12 +90,20 @@ return packer.startup(function(use)
 	}
 
 	use {
+		'https://github.com/apple/pkl-neovim',
+		after = "nvim-treesitter",
+		run = ":TSInstall! pkl"
+	}
+
+
+	use {
 		'vim-airline/vim-airline',
 		'vim-airline/vim-airline-themes'
 	}
 	use "onsails/lspkind-nvim" -- vscode-like pictogramsplugins
 	use "editorconfig/editorconfig-vim"
 	use "github/copilot.vim"
+	use "prisma/vim-prisma"
 
 	if PACKER_BOOTSTRAP then
 		require('packer').sync()
@@ -105,3 +112,15 @@ return packer.startup(function(use)
 	require("nvim-tree").setup()
 	require("mason").setup()
 end)
+
+-- The below is required for enabling the tree-sitter syntax engine, which is used by pkl-neovim.
+-- Set up Treesitter languages.
+require 'nvim-treesitter.configs'.setup {
+	ensure_installed = "pkl", -- or "pkl" for just this plugin.
+	highlight = {
+		enable = true, -- false will disable the whole extension
+	},
+	indent = {
+		enable = true
+	}
+}

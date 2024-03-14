@@ -26,7 +26,7 @@ lsp.on_attach(function(client, bufnr)
 		vim.lsp.buf.format({
 			async = false,
 			timeout_ms = 10000,
-			filter = allow_format({ 'lua_ls', 'rust_analyzer', 'gopls', 'xmlformatter' })
+			filter = allow_format({ 'lua_ls', 'rust_analyzer', 'gopls', 'xmlformatter', 'jdtls', 'jedi-language-server' })
 		})
 	end, opts)
 end)

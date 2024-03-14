@@ -20,3 +20,7 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 4
 vim.o.signcolumn = 'yes'
 vim.o.clipboard = 'unnamed'
+
+vim.g.markdown_fenced_languages = { "js=javascript", "yaml", "json", "python", "bash=sh", "viml=vim", "go", "rust",
+	"toml", "lua", "html", "css", "typescript", "tsx", "javascriptreact", "javascript.jsx", "typescriptreact",
+	"typescript.tsx" }

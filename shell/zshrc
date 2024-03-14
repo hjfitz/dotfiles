@@ -1,3 +1,5 @@
+# CodeWhisperer pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 #########################################################################
@@ -11,7 +13,7 @@
 #########################################################################
 
 # ENVIRONMENT
-export PATH=$HOME/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.yarn/bin:$GOPATH/bin:$HOME/Library/Python/3.10/bin:$(pyenv root)/shims:$PATH
+export PATH=$HOME/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.yarn/bin:$GOPATH/bin:$HOME/Library/Python/3.10/bin:$(pyenv root)/shims:$(go env GOPATH)/bin:$PATH
 #export ZSH=$HOME/.oh-my-zsh
 export GOPATH=$HOME/code/go
 export EDITOR=nvim
@@ -60,6 +62,11 @@ function rslogin() {
 	awsume rs-cni-shared && vault login -method=oidc -path=rs_azure_ad
 }
 
+function take() {
+	mkdir -p $1
+	cd $1
+}
+
 # ALIAS'
 alias dsrm="find . -name '.DS_Store' -type f -delete"
 alias vimrc="vim ~/.vimrc"
@@ -91,7 +98,7 @@ alias cpc="pbcopy"
 alias tgl="TF_CMD=terragrunt tflocal"
 alias rgg="rg --files | rg $1"
 alias pnp="cd ~/code/rs-devsecops/rs-dev/api-platform/product-and-price"
-alias dms="cd ~/code/rs-devsecops/rs-dev/titan/dms/"
+alias dms="cd ~/code/rs-devsecops/rs-dev/titan/dms/operational-source/"
 alias tflint="tflint -c ~/.tflint.hcl"
 alias ls="ls --color=auto"
 alias la="ls -la"
@@ -103,6 +110,7 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias tfp="cd .deploy/resources/projects"
 alias tfj="cd ../../../../.."
+alias hs="http-server -c-1 ."
 
 
 # Syntax highlighting
@@ -160,3 +168,6 @@ zinit light zsh-users/zsh-autosuggestions
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
