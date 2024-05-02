@@ -8,6 +8,7 @@ lsp.ensure_installed({
 	'terraformls',
 	'tflint',
 	'bashls',
+	'markdown',
 	'yamlls',
 })
 

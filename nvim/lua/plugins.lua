@@ -104,12 +104,18 @@ packer.startup(function(use)
 	use "editorconfig/editorconfig-vim"
 	use "github/copilot.vim"
 	use "prisma/vim-prisma"
+	use 'leafgarland/typescript-vim'
+	use 'peitalin/vim-jsx-typescript'
 
 	if PACKER_BOOTSTRAP then
 		require('packer').sync()
 	end
 
-	require("nvim-tree").setup()
+	require("nvim-tree").setup({
+		view = {
+			width = 50
+		}
+	})
 	require("mason").setup()
 end)
 
@@ -118,9 +124,11 @@ end)
 require 'nvim-treesitter.configs'.setup {
 	ensure_installed = "pkl", -- or "pkl" for just this plugin.
 	highlight = {
-		enable = true, -- false will disable the whole extension
+		enable = true,     -- false will disable the whole extension
 	},
 	indent = {
 		enable = true
-	}
+	},
+	additional_vim_regex_highlighting = false,
+
 }

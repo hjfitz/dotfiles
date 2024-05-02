@@ -1,5 +1,5 @@
-# CodeWhisperer pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
+# Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 #########################################################################
@@ -109,8 +109,17 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias tfp="cd .deploy/resources/projects"
-alias tfj="cd ../../../../.."
+alias tfj="cd ../../../.."
 alias hs="http-server -c-1 ."
+alias fix_kong_ver="m1-terraform-provider-helper install kevholditch/kong -v 1.12.0"
+
+fix_template_ver() {
+    rm -rf .terraform/
+    rm .terraform-lock.hcl
+    tg init
+    m1-terraform-provider-helper install hashicorp/template -v v2.2.0
+    m1-terraform-provider-helper lockfile upgrade
+}
 
 
 # Syntax highlighting
@@ -152,7 +161,7 @@ complete -o nospace -C /opt/homebrew/bin/vault vault
 export PATH="$HOME/.tgenv/bin:$HOME/.fig/bin:$PATH"
 export TERRAGRUNT_DISABLE_BUCKET_UPDATE=true
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
-
+export TFENV_ARCH=amd64
 
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -169,5 +178,5 @@ zinit light zsh-users/zsh-autosuggestions
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 
-# CodeWhisperer post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
+# Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
