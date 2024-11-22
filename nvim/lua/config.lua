@@ -1,5 +1,6 @@
-vim.cmd('colorscheme PaperColor')
---vim.cmd('colorscheme atlas')
+local neogit = require('neogit')
+
+vim.cmd('colorscheme sonokai')
 vim.cmd('hi Normal ctermbg=NONE')
 vim.cmd('set nowrap')
 
@@ -22,5 +23,14 @@ vim.o.signcolumn = 'yes'
 vim.o.clipboard = 'unnamed'
 
 vim.g.markdown_fenced_languages = { "js=javascript", "yaml", "json", "python", "bash=sh", "viml=vim", "go", "rust",
-	"toml", "lua", "html", "css", "typescript", "tsx=typescriptreact", "javascriptreact", "javascript.jsx", "typescriptreact",
+	"toml", "lua", "html", "css", "typescript", "tsx=typescriptreact", "javascriptreact", "javascript.jsx",
+	"typescriptreact",
 	"typescript.tsx" }
+
+
+
+neogit.setup {
+	integrations = {
+		diffview = true
+	}
+}

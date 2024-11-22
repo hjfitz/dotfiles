@@ -1,73 +1,56 @@
 # Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-#########################################################################
-#                                                                       #
-#    _____    __ _____    _____ _____ _____    _____     _              #
-#   |  |  |__|  |   __|  |__   |   __|  |  |  |   __|___| |_ _ _ ___    #
-#   |     |  |  |   __|  |   __|__   |     |  |__   | -_|  _| | | . |   #
-#   |__|__|_____|__|     |_____|_____|__|__|  |_____|___|_| |___|  _|   #
-#                                                               |_|     #
-#                                                                       #
-#########################################################################
 
-# ENVIRONMENT
-export PATH=$HOME/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.yarn/bin:$GOPATH/bin:$HOME/Library/Python/3.10/bin:$(pyenv root)/shims:$(go env GOPATH)/bin:$PATH
-#export ZSH=$HOME/.oh-my-zsh
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃                                                                      ┃
+# ┃   _____    __ _____    _____ _____ _____    _____     _              ┃
+# ┃  |  |  |__|  |   __|  |__   |   __|  |  |  |   __|___| |_ _ _ ___    ┃
+# ┃  |     |  |  |   __|  |   __|__   |     |  |__   | -_|  _| | | . |   ┃
+# ┃  |__|__|_____|__|     |_____|_____|__|__|  |_____|___|_| |___|  _|   ┃
+# ┃                                                              |_|     ┃
+# ┃                                                                      ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+# Environment variables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+export PATH=$HOME/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.yarn/bin:$GOPATH/bin:$PATH
+export PATH=$HOME/Library/Python/3.10/bin:$(pyenv root)/shims:$(go env GOPATH)/bin:$PATH
+export PATH="$HOME/.tgenv/bin:$HOME/.fig/bin:$PATH"
+
 export GOPATH=$HOME/code/go
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export TF_VAR_env_file=sandpit
 export RIPGREP_CONFIG_PATH=$HOME/.rg.conf
 
-source ~/.telemetry.sh
+
+# Load additional config ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+source $HOME/.telemetry.sh
+source $HOME/.zsh_shell_vars
+source $HOME/.secrets
 
 
+# ZSH Config ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search # Up
-bindkey "^[[B" down-line-or-beginning-search # Down
-
+autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit
 compinit
 
-# ZSH Config
-ZSH_THEME="avit"
-#ZSH_THEME="spaceship"
-#source $ZSH/oh-my-zsh.sh
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search 
+bindkey "^[[B" down-line-or-beginning-search
+bindkey "^[[1;2C" forward-word
+bindkey "^[[1;2D" backward-word
+
 eval "$(starship init zsh)"
 
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-plugins=(aws git osx node github jsontools npm zsh-vi-mode)
 
-function checkArgs() {
-  echo "arg: \$1: $1"
-}
 
-function makeChecklist() {
-	grep -e '^#' $1 | sed 's/^###/- \[ \]/' | tee tasks.md
-}
-
-function v() {
-	nvim -o $(fzf)
-}
-
-function rslogin() {
-	awsume rs-cni-shared && vault login -method=oidc -path=rs_azure_ad
-}
-
-function take() {
-	mkdir -p $1
-	cd $1
-}
-
-# ALIAS'
+# Aliases ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 alias dsrm="find . -name '.DS_Store' -type f -delete"
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
@@ -108,75 +91,76 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-alias tfp="cd .deploy/resources/projects"
 alias tfj="cd ../../../.."
 alias hs="http-server -c-1 ."
-alias fix_kong_ver="m1-terraform-provider-helper install kevholditch/kong -v 1.12.0"
 
-fix_template_ver() {
-    rm -rf .terraform/
-    rm .terraform-lock.hcl
-    tg init
-    m1-terraform-provider-helper install hashicorp/template -v v2.2.0
-    m1-terraform-provider-helper lockfile upgrade
+function tfp() {
+    project_root=".deploy/resources/projects"
+
+    query="$1"
+
+    if [[ "$query" == "" ]]; then
+	cd "$project_root"
+    else
+	result=$(ls "$project_root" | grep "$query")
+
+	if [[ "$result" == "" ]]; then
+	    cd "$project_root"
+	else
+	    cd "$project_root/$result"
+	fi
+    fi
 }
 
+function v() {
+    nvim -o $(fzf)
+}
 
-# Syntax highlighting
-#source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#source $HOME/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor pattern)
-ZSH_HIGHLIGHT_STYLES[command]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan'
-ZSH_HIGHLIGHT_PATTERNS+=('rm*-rf*' 'fg=red,bold')
-ZSH_HIGHLIGHT_PATTERNS+=('sudo rm*-rf*' 'fg=white,bold,bg=red')
+function take() {
+    mkdir -p $1
+    cd $1
+}
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# Keybinds
-bindkey "^[[1;2C" forward-word
-bindkey "^[[1;2D" backward-word
+# Terraform and Terragrunt ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+fix_versions() {
+    rm -rf .terraform/
+    rm .terraform-lock.hcl
+    tg init -reconfigure
+    m1-terraform-provider-helper install hashicorp/template -v v2.2.0
+    m1-terraform-provider-helper install kevholditch/kong -v 1.12.0
+    m1-terraform-provider-helper lockfile upgrade
+    tg init
+}
 
-
-autoload -U +X bashcompinit && bashcompinit
+export TFENV_ARCH=amd64
+export TERRAGRUNT_DISABLE_BUCKET_UPDATE=true
+export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+export TF_VAR_env_file=sandpit
+export TF_VAR_image_version=$(rsbuildver)
 complete -o nospace -C $HOME/.local/bin/terraform terraform
 
-export LESS="--RAW-CONTROL-CHARS"
-[[ -f ~/.config/less/termcap ]] && . ~/.config/less/termcap
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
-source $HOME/.zsh_shell_vars
-source $HOME/.secrets
-
+# Node.js gubbins ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 
-complete -o nospace -C /opt/homebrew/bin/vault vault
-
-export PATH="$HOME/.tgenv/bin:$HOME/.fig/bin:$PATH"
-export TERRAGRUNT_DISABLE_BUCKET_UPDATE=true
-export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
-export TFENV_ARCH=amd64
-
-
+# Zinit ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 
-[[ -s "/Users/e0668400/.gvm/scripts/gvm" ]] && source "/Users/e0668400/.gvm/scripts/gvm"
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+# Misc config ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+complete -o nospace -C /opt/homebrew/bin/vault vault
+
 
 # Q post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"

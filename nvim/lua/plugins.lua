@@ -60,6 +60,7 @@ packer.startup(function(use)
 		}
 	}
 
+	use "sainnhe/sonokai"
 	use "nvim-lua/popup.nvim"
 	use "nvim-lua/plenary.nvim"
 	use "jose-elias-alvarez/null-ls.nvim"
@@ -102,7 +103,7 @@ packer.startup(function(use)
 	}
 	use "onsails/lspkind-nvim" -- vscode-like pictogramsplugins
 	use "editorconfig/editorconfig-vim"
-	use "github/copilot.vim"
+	--use "github/copilot.vim"
 	use "prisma/vim-prisma"
 	use 'leafgarland/typescript-vim'
 	use 'peitalin/vim-jsx-typescript'
