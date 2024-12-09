@@ -1,0 +1,116 @@
+version: '3.8'
+
+networks:
+  toolbelt:
+    name: toolbelt_network
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    ports:
+      - "80:80" # HTTP
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+    networks:
+      - toolbelt
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+
+  homarr:
+    image: ghcr.io/ajnart/homarr:latest
+    container_name: homarr
+    ports:
+      - "7575:7575" # Optional if accessed via Traefik
+    networks:
+      - toolbelt
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homarr.rule=Host(`homarr.localhost`)"
+      - "traefik.http.services.homarr.loadbalancer.server.port=7575"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - toolbelt
+    command: ["redis-server", "--appendonly", "yes"]
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    networks:
+      - toolbelt
+    environment:
+      - REDIS_HOSTS=local:redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.redis-commander.rule=Host(`redis.localhost`)"
+      - "traefik.http.services.redis-commander.loadbalancer.server.port=8081"
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    networks:
+      - toolbelt
+    volumes:
+      - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    networks:
+      - toolbelt
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mongo-express.rule=Host(`mongo.localhost`)"
+      - "traefik.http.services.mongo-express.loadbalancer.server.port=8081"
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    networks:
+      - toolbelt
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    networks:
+      - toolbelt
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`adminer.localhost`)"
+      - "traefik.http.services.adminer.loadbalancer.server.port=8080"
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
+    networks:
+      - toolbelt
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.localhost`)"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+volumes:
+  mongo-data:
+  postgres-data:
+  portainer-data:

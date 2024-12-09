@@ -1,5 +1,7 @@
-vim.api.nvim_set_keymap('n', 'ff', '<cmd>Telescope find_files find_command=rg,--files<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', 'fg', '<cmd>Telescope live_grep hidden=true<cr>', { noremap = true })
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', 'ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', 'fg', builtin.live_grep, { desc = 'Telescope live grep' })
+
 vim.api.nvim_set_keymap('n', 'ss', ':vsplit<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'sf', ':split<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'tn', ':tabnew<CR>', { noremap = true })
@@ -20,3 +22,20 @@ vim.api.nvim_set_keymap('n', '<Leader>w', ':resize -10<CR>', { noremap = true })
 vim.g['copilot_no_tab_map'] = true
 vim.g['copilot_assume_mapped'] = true
 vim.api.nvim_set_keymap('i', '<C-h>', 'copilot#Accept("<CR>")', { expr = true, silent = true })
+
+
+-- Enable copy and paste from clipboard
+if vim.fn.has("wsl") == 1 then 
+    vim.g.clipboard = {
+        name = 'WslClipboard',
+        copy = {
+            ['+'] = 'clip.exe',
+            ['*'] = 'clip.exe',
+        },
+        paste = {
+            ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        },
+        cache_enabled = 0
+    }
+end

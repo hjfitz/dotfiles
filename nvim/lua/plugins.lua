@@ -53,17 +53,14 @@ packer.startup(function(use)
 			{ 'saadparwaiz1/cmp_luasnip' },
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'hrsh7th/cmp-nvim-lua' },
-
-			-- Snippets
-			--{'L3MON4D3/LuaSnip'},
-			--{'rafamadriz/friendly-snippets'},
 		}
 	}
 
 	use "sainnhe/sonokai"
 	use "nvim-lua/popup.nvim"
 	use "nvim-lua/plenary.nvim"
-	use "jose-elias-alvarez/null-ls.nvim"
+	use 'mfussenegger/nvim-lint'
+	use 'mhartington/formatter.nvim'
 	use "jose-elias-alvarez/nvim-lsp-ts-utils"
 	use 'hrsh7th/cmp-cmdline'
 	use 'ibhagwan/fzf-lua'
@@ -77,8 +74,13 @@ packer.startup(function(use)
 	use 'hashivim/vim-terraform'
 	use 'juliosueiras/vim-terraform-completion'
 	use 'evanleck/vim-svelte'
+	use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
 	use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
-	use { 'nvim-telescope/telescope.nvim', tag = '0.1.4' }
+	use {
+	  'nvim-telescope/telescope.nvim', tag = '0.1.8',
+	-- or                            , branch = '0.1.x',
+	  requires = { {'nvim-lua/plenary.nvim'} }
+	}
 	use {
 		'kyazdani42/nvim-tree.lua',
 		requires = {
@@ -89,13 +91,6 @@ packer.startup(function(use)
 		'nvim-treesitter/nvim-treesitter',
 		run = ':TSUpdate'
 	}
-
-	use {
-		'https://github.com/apple/pkl-neovim',
-		after = "nvim-treesitter",
-		run = ":TSInstall! pkl"
-	}
-
 
 	use {
 		'vim-airline/vim-airline',
@@ -123,7 +118,6 @@ end)
 -- The below is required for enabling the tree-sitter syntax engine, which is used by pkl-neovim.
 -- Set up Treesitter languages.
 require 'nvim-treesitter.configs'.setup {
-	ensure_installed = "pkl", -- or "pkl" for just this plugin.
 	highlight = {
 		enable = true,     -- false will disable the whole extension
 	},
@@ -131,5 +125,4 @@ require 'nvim-treesitter.configs'.setup {
 		enable = true
 	},
 	additional_vim_regex_highlighting = false,
-
 }

@@ -13,8 +13,9 @@
 
 # Environment variables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export PATH=$HOME/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.yarn/bin:$GOPATH/bin:$PATH
-export PATH=$HOME/Library/Python/3.10/bin:$(pyenv root)/shims:$(go env GOPATH)/bin:$PATH
+export PATH=$HOME/Library/Python/3.10/bin:$(go env GOPATH)/bin:$PATH
 export PATH="$HOME/.tgenv/bin:$HOME/.fig/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$HOME/.local/share/bob/nvim-bin:$PATH"
 
 export GOPATH=$HOME/code/go
 export EDITOR=nvim
@@ -75,13 +76,11 @@ alias awsume=". awsume"
 alias tg=terragrunt
 alias sand="awsume rs-cni-sandpit"
 alias nonprod="awsume rs-cni-nonprod"
-alias code="cd ~/code"
+#alias code="cd ~/code"
 alias sc="jq -r '.scripts|to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]' < package.json"
 alias cpc="pbcopy"
 alias tgl="TF_CMD=terragrunt tflocal"
 alias rgg="rg --files | rg $1"
-alias pnp="cd ~/code/rs-devsecops/rs-dev/api-platform/product-and-price"
-alias dms="cd ~/code/rs-devsecops/rs-dev/titan/dms/operational-source/"
 alias tflint="tflint -c ~/.tflint.hcl"
 alias ls="ls --color=auto"
 alias la="ls -la"
@@ -93,6 +92,8 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias tfj="cd ../../../.."
 alias hs="http-server -c-1 ."
+alias pbcopy="xclip -selection clipboard"
+alias pbpaste="xclip -selection clipboard -o"
 
 function tfp() {
     project_root=".deploy/resources/projects"
@@ -123,29 +124,10 @@ function take() {
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# Terraform and Terragrunt ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-fix_versions() {
-    rm -rf .terraform/
-    rm .terraform-lock.hcl
-    tg init -reconfigure
-    m1-terraform-provider-helper install hashicorp/template -v v2.2.0
-    m1-terraform-provider-helper install kevholditch/kong -v 1.12.0
-    m1-terraform-provider-helper lockfile upgrade
-    tg init
-}
-
-export TFENV_ARCH=amd64
-export TERRAGRUNT_DISABLE_BUCKET_UPDATE=true
-export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
-export TF_VAR_env_file=sandpit
-export TF_VAR_image_version=$(rsbuildver)
-complete -o nospace -C $HOME/.local/bin/terraform terraform
-
 
 # Node.js gubbins ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 
 # Zinit ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

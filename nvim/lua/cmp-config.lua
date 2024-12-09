@@ -1,13 +1,16 @@
 local cmp = require('cmp')
 
-cmp.setup {
-	mapping = {
-		['<C-g>'] = cmp.mapping.complete(),
-		['<CR>'] = cmp.mapping.confirm({ select = true }),
-	},
-	snippet = {
-		expand = function(args)
-			require('luasnip').lsp_expand(args.body)
-		end,
-	}
-}
+cmp.setup({
+  sources = {
+    {name = 'nvim_lsp'},
+  },
+  snippet = {
+    expand = function(args)
+      vim.snippet.expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), 
+      ['<C-i>'] = cmp.mapping.confirm({ select = true }),
+    }),
+})
