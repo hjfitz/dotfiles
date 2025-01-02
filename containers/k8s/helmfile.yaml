@@ -1,0 +1,31 @@
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: traefik
+    url: https://traefik.github.io/charts
+
+releases:
+  - name: traefik
+    namespace: kube-system
+    chart: traefik/traefik
+    values:
+      - ingressClass:
+          enabled: true
+          isDefaultClass: true
+  - name: redis
+    chart: bitnami/redis
+    version: 20.4.0
+    values:
+      - global:
+          redis:
+            password: "localdev"
+      - architecture: standalone 
+        auth:
+          enabled: true
+          password: "localdev" # Explicitly enable and set the password
+  - name: redis-commander
+    chart: ./local/redis-commander
+    values:
+      - redis:
+          host: "redis-master" # Ensure this matches your Redis service name
+          password: "localdev"

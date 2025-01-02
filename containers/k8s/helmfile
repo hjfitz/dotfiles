@@ -1,0 +1,7 @@
+#!/bin/bash
+docker run --rm \
+    -v "$(pwd):/apps" \
+    -w /apps \
+    -v ~/.kube:/root/.kube \
+    -e KUBECONFIG=/root/.kube/config \
+    -v ~/.config/helm:/root/.config/helm ghcr.io/helmfile/helmfile:latest helmfile "$@"
