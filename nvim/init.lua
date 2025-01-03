@@ -1,5 +1,5 @@
 require('plugins')
 require('config')
 require('maps')
-require('formatting')
+require('lsp')
 require('autocomplete')
