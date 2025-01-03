@@ -13,4 +13,8 @@ cmp.setup({
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
 		["<C-i>"] = cmp.mapping.confirm({ select = true }),
 	}),
+<<<<<<< HEAD
 })
+=======
+})
+>>>>>>> c2904e5 (refactor: removed gumpf)
