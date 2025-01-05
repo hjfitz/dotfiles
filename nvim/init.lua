@@ -1,6 +1,5 @@
 require('plugins')
 require('config')
 require('maps')
-require('lsp_zero')
-require('cmp-config')
-
+require('lsp')
+require('autocomplete')
