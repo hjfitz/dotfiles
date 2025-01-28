@@ -1,4 +1,5 @@
 local lsp = require("lsp-zero")
+local util = require("lspconfig.util")
 local null_ls = require("null-ls")
 local mason_lspconfig = require('mason-lspconfig')
 local lspconfig = require('lspconfig')
@@ -24,6 +25,16 @@ null_ls.setup({
 				"typescriptreact",
 				"vue",
 			},
+			condition = function(utils)
+			    return utils.root_has_file({
+				".eslintrc",
+				".eslintrc.js",
+				".eslintrc.cjs",
+				".eslintrc.json",
+				".eslintrc.yaml",
+				".eslintrc.yml",
+			    })
+		        end,
 		}),
 	},
 })
@@ -35,9 +46,6 @@ local function on_lsp_zero_attach(client, bufnr)
 		vim.lsp.buf.format({
 			async = false,
 			timeout_ms = 10000,
-			filter = function(client)
-				return client.name == "null-ls"
-			end,
 		})
 	end, { buffer = bufnr })
 end
@@ -52,10 +60,33 @@ mason_lspconfig.setup({
         'ts_ls',
         'lua_ls',
         'pyright',
+	'biome',
     },
 })
 
+lspconfig.biome.setup({
+  root_dir = util.root_pattern("biome.json", "biome.toml", ".biomerc", "biome.jsonc"),
+})
 lspconfig.ts_ls.setup({})
-lspconfig.eslint.setup({})
+lspconfig.eslint.setup({
+  root_dir = util.root_pattern(
+    ".eslintrc",
+    ".eslintrc.js",
+    ".eslintrc.cjs",
+    ".eslintrc.json",
+    ".eslintrc.yaml",
+    ".eslintrc.yml"
+  ),
+})
 lspconfig.lua_ls.setup({})
 lspconfig.pyright.setup({})
+
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = "●",
+    spacing = 4,
+  },
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+})

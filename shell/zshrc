@@ -157,3 +157,9 @@ if [ -f "${HOME}/.local/gcloud/path.zsh.inc" ]; then . "${HOME}/.local/gcloud/pa
 
 # The next line enables shell command completion for gcloud.
 if [ -f "${HOME}/.local/gcloud/completion.zsh.inc" ]; then . "${HOME}/.local/gcloud/completion.zsh.inc"; fi
+# bun completions
+[ -s "/Users/hjf/.bun/_bun" ] && source "/Users/hjf/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
