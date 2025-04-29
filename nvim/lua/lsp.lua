@@ -1,8 +1,8 @@
 local lsp = require("lsp-zero")
 local util = require("lspconfig.util")
 local null_ls = require("null-ls")
-local mason_lspconfig = require('mason-lspconfig')
-local lspconfig = require('lspconfig')
+local mason_lspconfig = require("mason-lspconfig")
+local lspconfig = require("lspconfig")
 
 null_ls.setup({
 	sources = {
@@ -26,15 +26,15 @@ null_ls.setup({
 				"vue",
 			},
 			condition = function(utils)
-			    return utils.root_has_file({
-				".eslintrc",
-				".eslintrc.js",
-				".eslintrc.cjs",
-				".eslintrc.json",
-				".eslintrc.yaml",
-				".eslintrc.yml",
-			    })
-		        end,
+				return utils.root_has_file({
+					".eslintrc",
+					".eslintrc.js",
+					".eslintrc.cjs",
+					".eslintrc.json",
+					".eslintrc.yaml",
+					".eslintrc.yml",
+				})
+			end,
 		}),
 	},
 })
@@ -53,40 +53,49 @@ end
 lsp.on_attach(on_lsp_zero_attach)
 lsp.setup()
 
-
 mason_lspconfig.setup({
-    ensure_installed = {
-        'eslint',
-        'ts_ls',
-        'lua_ls',
-        'pyright',
-	'biome',
-    },
+	ensure_installed = {
+		"gopls",
+		"eslint",
+		"ts_ls",
+		"lua_ls",
+		"pyright",
+		"biome",
+		"terraformls",
+	},
 })
 
 lspconfig.biome.setup({
-  root_dir = util.root_pattern("biome.json", "biome.toml", ".biomerc", "biome.jsonc"),
+	root_dir = util.root_pattern("biome.json", "biome.toml", ".biomerc", "biome.jsonc"),
 })
+
 lspconfig.ts_ls.setup({})
 lspconfig.eslint.setup({
-  root_dir = util.root_pattern(
-    ".eslintrc",
-    ".eslintrc.js",
-    ".eslintrc.cjs",
-    ".eslintrc.json",
-    ".eslintrc.yaml",
-    ".eslintrc.yml"
-  ),
+	root_dir = util.root_pattern(
+		".eslintrc",
+		".eslintrc.js",
+		".eslintrc.cjs",
+		".eslintrc.json",
+		".eslintrc.yaml",
+		".eslintrc.yml"
+	),
 })
 lspconfig.lua_ls.setup({})
 lspconfig.pyright.setup({})
+lspconfig.gopls.setup({})
+lspconfig.yamlls.setup({})
+lspconfig.jsonls.setup({})
+lspconfig.bashls.setup({})
+lspconfig.terraformls.setup({
+	filetypes = { "terraform", "hcl", "tf", "tfvars" },
+})
 
 vim.diagnostic.config({
-  virtual_text = {
-    prefix = "●",
-    spacing = 4,
-  },
-  signs = true,
-  underline = true,
-  update_in_insert = false,
+	virtual_text = {
+		prefix = "●",
+		spacing = 4,
+	},
+	signs = true,
+	underline = true,
+	update_in_insert = false,
 })

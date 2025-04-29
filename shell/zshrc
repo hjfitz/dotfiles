@@ -17,7 +17,6 @@ export PATH=$HOME/Library/Python/3.10/bin:$(go env GOPATH)/bin:$PATH
 export PATH="$HOME/.tgenv/bin:$HOME/.fig/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$HOME/.local/share/bob/nvim-bin:$PATH"
 
-export NODE_PATH=$NODE_PATH:`npm root -g`
 export GOPATH=$HOME/code/go
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -100,22 +99,27 @@ alias kctl=kubectl
 alias npmauth="npx google-artifactregistry-auth"
 alias dc="docker-compose"
 
-function tfp() {
-    project_root=".deploy/resources/projects"
 
-    query="$1"
+gitswitch() {
+    local config_dir="$HOME/.ssh"
+    local self_config="$config_dir/config-self"
+    local work_config="$config_dir/config-gfs"
+    local target_config="$config_dir/config"
 
-    if [[ "$query" == "" ]]; then
-	cd "$project_root"
-    else
-	result=$(ls "$project_root" | grep "$query")
-
-	if [[ "$result" == "" ]]; then
-	    cd "$project_root"
-	else
-	    cd "$project_root/$result"
-	fi
-    fi
+    case "$1" in
+        self)
+            cp "$self_config" "$target_config"
+            echo "Switched to personal SSH config."
+            ;;
+        work)
+            cp "$work_config" "$target_config"
+            echo "Switched to work SSH config."
+            ;;
+        *)
+            echo "Usage: gitswitch {self|work}"
+            return 1
+            ;;
+    esac
 }
 
 function v() {
@@ -127,12 +131,56 @@ function take() {
     cd $1
 }
 
+function sess() {
+	local dir
+	dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}')
+
+	cd "$dir"
+	tmux renamew code
+
+	tmux new-window -c "$dir" -n cli -d
+	tmux new-window -c "$d" -n server -d
+
+	vim
+}
+
+function news() {
+	local dir
+	dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}')
+	session_name=$(basename "$dir")
+
+	tmux new-session -d -s "$session_name" -c "$dir" -n code
+
+	tmux new-window -t "$session_name": -c "$dir" -n cli
+	tmux new-window -t "$session_name": -c "$dir" -n server
+
+	if [ -n "$TMUX" ]; then
+		tmux switch-client -t "$session_name"
+	else
+		tmux attach-session -t "$session_name"
+	fi
+
+	tmux select-window -t "$session_name":code
+	tmux send-keys -t "$session_name":code "nvim" C-m
+}
+
+function cdf() {
+  local dir
+  dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}') && cd "$dir"
+}
+
+bindkey -s '^G' 'cdf\n'
+bindkey -s '^N' 'news\n'
+bindkey -s '^S' 'sess\n'
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
 # Node.js gubbins ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+export NODE_PATH=$NODE_PATH:`npm root -g`
 
 
 # Zinit ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -158,8 +206,10 @@ if [ -f "${HOME}/.local/gcloud/path.zsh.inc" ]; then . "${HOME}/.local/gcloud/pa
 # The next line enables shell command completion for gcloud.
 if [ -f "${HOME}/.local/gcloud/completion.zsh.inc" ]; then . "${HOME}/.local/gcloud/completion.zsh.inc"; fi
 # bun completions
-[ -s "/Users/hjf/.bun/_bun" ] && source "/Users/hjf/.bun/_bun"
+[ -s "/home/hjf/.bun/_bun" ] && source "/home/hjf/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+export PATH=$HOME/.nvm/versions/node/$(node --version)/lib:$PATH
