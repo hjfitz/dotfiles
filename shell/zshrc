@@ -131,47 +131,12 @@ function take() {
     cd $1
 }
 
-function sess() {
-	local dir
-	dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}')
-
-	cd "$dir"
-	tmux renamew code
-
-	tmux new-window -c "$dir" -n cli -d
-	tmux new-window -c "$d" -n server -d
-
-	vim
-}
-
-function news() {
-	local dir
-	dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}')
-	session_name=$(basename "$dir")
-
-	tmux new-session -d -s "$session_name" -c "$dir" -n code
-
-	tmux new-window -t "$session_name": -c "$dir" -n cli
-	tmux new-window -t "$session_name": -c "$dir" -n server
-
-	if [ -n "$TMUX" ]; then
-		tmux switch-client -t "$session_name"
-	else
-		tmux attach-session -t "$session_name"
-	fi
-
-	tmux select-window -t "$session_name":code
-	tmux send-keys -t "$session_name":code "nvim" C-m
-}
-
 function cdf() {
   local dir
   dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}') && cd "$dir"
 }
 
 bindkey -s '^G' 'cdf\n'
-bindkey -s '^N' 'news\n'
-bindkey -s '^S' 'sess\n'
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+prj=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}')
+session_name=$(basename "$prj")
+
+tmux new-session -d -s "$session_name" -c "$prj"
+
+if [ -n "$TMUX" ]; then
+	tmux switch-client -t "$session_name"
+else
+	tmux attach-session -t "$session_name"
+fi
+
+tmux send-keys -t "$session_name":code "nvim" C-m
