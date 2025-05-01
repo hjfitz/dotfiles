@@ -1,6 +1,20 @@
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "ff", builtin.find_files, { desc = "Telescope find files" })
-vim.keymap.set("n", "fg", builtin.live_grep, { desc = "Telescope live grep" })
+vim.keymap.set("n", "ff", function()
+	builtin.find_files({
+		hidden = true,
+		no_ignore = false,
+		no_ignore_parent = false,
+		file_ignore_patterns = { "^.git/" },
+	})
+end, { desc = "find files" })
+
+vim.keymap.set("n", "fg", function()
+	builtin.live_grep({
+		additional_args = function(args)
+			return vim.list_extend(args, { "--hidden", "--glob", "!.git/*" })
+		end,
+	})
+end, { desc = "live grep" })
 
 vim.api.nvim_set_keymap("n", "ss", ":vsplit<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "sf", ":split<CR>", { noremap = true })
