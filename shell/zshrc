@@ -1,87 +1,102 @@
-# Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ENVRIONMENT
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-# ┃                                                                      ┃
-# ┃   _____    __ _____    _____ _____ _____    _____     _              ┃
-# ┃  |  |  |__|  |   __|  |__   |   __|  |  |  |   __|___| |_ _ _ ___    ┃
-# ┃  |     |  |  |   __|  |   __|__   |     |  |__   | -_|  _| | | . |   ┃
-# ┃  |__|__|_____|__|     |_____|_____|__|__|  |_____|___|_| |___|  _|   ┃
-# ┃                                                              |_|     ┃
-# ┃                                                                      ┃
-# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
-# Environment variables ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PATH
 export PATH=$HOME/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.yarn/bin:$GOPATH/bin:$PATH
 export PATH=$HOME/Library/Python/3.10/bin:$(go env GOPATH)/bin:$PATH
 export PATH="$HOME/.tgenv/bin:$HOME/.fig/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$HOME/.local/share/bob/nvim-bin:$PATH"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH=$HOME/.nvm/versions/node/$(node --version)/lib:$PATH
 
+# Languages
 export GOPATH=$HOME/code/go
+export BUN_INSTALL="$HOME/.bun"
+export NODE_PATH=$NODE_PATH:`npm root -g`
+
+# Misc
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export RIPGREP_CONFIG_PATH=$HOME/.rg.conf
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ZSH Config 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# Load additional config ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-source $HOME/.telemetry.sh
-source $HOME/.zsh_shell_vars
-source $HOME/.secrets
-
-
-# ZSH Config ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# autoload
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit
-compinit
+compinit -C
 
+# ???
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
+
+
+# bindkey
 bindkey "^[[A" up-line-or-beginning-search 
 bindkey "^[[B" down-line-or-beginning-search
 bindkey "^[[1;2C" forward-word
 bindkey "^[[1;2D" backward-word
+bindkey -s '^G' 'cdf\n'
 
-eval "$(starship init zsh)"
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ZINIT
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+zinit-setup() {
+  local ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+  [[ -d "$ZINIT_HOME/.git" ]] || git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+  source "$ZINIT_HOME/zinit.zsh"
 
-CASE_SENSITIVE="true"
-HYPHEN_INSENSITIVE="true"
-ENABLE_CORRECTION="true"
-COMPLETION_WAITING_DOTS="true"
+  zinit light zdharma-continuum/fast-syntax-highlighting
+  zinit light zsh-users/zsh-autosuggestions
+  zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
+  zinit light sindresorhus/pure
+	autoload -Uz vcs_info
+	precmd_functions+=(vcs_info)
+}
+
+autoload -U add-zsh-hook
+add-zsh-hook precmd zinit-setup
 
 
-# Aliases ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-alias dsrm="find . -name '.DS_Store' -type f -delete"
-alias vimrc="vim ~/.vimrc"
-alias zshrc="vim ~/.zshrc"
-alias sv="screen vim -S vim"
-alias mdpdf="md-to-pdf"
-alias r="sudo -i"
-alias sude="sudo -E"
-alias pip=pip3
-alias py=python3
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SOURCED CONFIG
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# me
+[[ -f "$HOME/.telemetry.sh" ]] && source "$HOME/.telemetry.sh"
+[[ -f "$HOME/.secrets" ]] && source "$HOME/.secrets"
+
+
+# gcloud
+if [ -f "${HOME}/.local/gcloud/path.zsh.inc" ]; then . "${HOME}/.local/gcloud/path.zsh.inc"; fi
+if [ -f "${HOME}/.local/gcloud/completion.zsh.inc" ]; then . "${HOME}/.local/gcloud/completion.zsh.inc"; fi
+
+# bun
+[ -s "/home/hjf/.bun/_bun" ] && source "/home/hjf/.bun/_bun"
+
+# mise
+if [[ -x "$HOME/.local/bin/mise" ]]; then
+  eval "$("$HOME/.local/bin/mise" activate zsh)"
+else
+  echo " mise not found. Installing to ~/.local/bin..."
+  curl https://mise.run | sh
+fi
+
+eval "$($HOME/.local/bin/mise activate zsh)"
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Aliases
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 alias gs='git status'
-alias ga='git add'
-alias gb='git branch --show-current'
-alias gc='git checkout'
 alias gcl="git stash save && git stash clear"
 alias tf=terraform
-alias mdl="mdless -I"
-alias vim=nvim
-alias temp='sudo powermetrics 2>/dev/null | grep -i "temperature"'
-alias rgr=ranger
-alias rimraf='rm -rf'
-alias awsume=". awsume"
 alias tg=terragrunt
-alias sand="awsume rs-cni-sandpit"
-alias nonprod="awsume rs-cni-nonprod"
-#alias code="cd ~/code"
-alias sc="jq -r '.scripts|to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]' < package.json"
-alias cpc="pbcopy"
-alias tgl="TF_CMD=terragrunt tflocal"
-alias rgg="rg --files | rg $1"
-alias tflint="tflint -c ~/.tflint.hcl"
+alias vim=nvim
 alias ls="ls --color=auto"
 alias la="ls -la"
 alias ll="ls -l"
@@ -90,15 +105,9 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-alias tfj="cd ../../../.."
-alias hs="http-server -c-1 ."
 alias pbcopy="xclip -selection clipboard"
 alias pbpaste="xclip -selection clipboard -o"
-alias bat="batcat"
 alias kctl=kubectl
-alias npmauth="npx google-artifactregistry-auth"
-alias dc="docker-compose"
-
 
 gitswitch() {
     local config_dir="$HOME/.ssh"
@@ -122,10 +131,6 @@ gitswitch() {
     esac
 }
 
-function v() {
-    nvim -o $(fzf)
-}
-
 function take() {
     mkdir -p $1
     cd $1
@@ -136,45 +141,3 @@ function cdf() {
   dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}') && cd "$dir"
 }
 
-bindkey -s '^G' 'cdf\n'
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-
-# Node.js gubbins ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-export NODE_PATH=$NODE_PATH:`npm root -g`
-
-
-# Zinit ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
-
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
-
-
-# Misc config ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-complete -o nospace -C /opt/homebrew/bin/vault vault
-
-
-# Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "${HOME}/.local/gcloud/path.zsh.inc" ]; then . "${HOME}/.local/gcloud/path.zsh.inc"; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f "${HOME}/.local/gcloud/completion.zsh.inc" ]; then . "${HOME}/.local/gcloud/completion.zsh.inc"; fi
-# bun completions
-[ -s "/home/hjf/.bun/_bun" ] && source "/home/hjf/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-export PATH=$HOME/.nvm/versions/node/$(node --version)/lib:$PATH

@@ -2,14 +2,9 @@
 dir=$(fdfind . ~/code --type d --exclude .git --exclude node_modules --exclude go | fzf --preview 'tree -L 1 {}') || exit
 session_name=$(basename "$dir")
 
-echo "$session_name"
-
-# If session exists, switch to it
 if tmux has-session -t "$session_name" 2>/dev/null; then
-	echo "session exists"
 	tmux switch-client -t "$session_name"
 else
-	echo "creating new session"
 	tmux new-session -d -s "$session_name" -c "$dir" -n code
 	tmux new-window -t "$session_name": -c "$dir" -n cli
 	tmux new-window -t "$session_name": -c "$dir" -n server
