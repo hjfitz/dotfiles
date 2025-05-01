@@ -55,8 +55,6 @@ zinit-setup() {
   zinit light zsh-users/zsh-autosuggestions
   zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
   zinit light sindresorhus/pure
-	autoload -Uz vcs_info
-	precmd_functions+=(vcs_info)
 }
 
 autoload -U add-zsh-hook
