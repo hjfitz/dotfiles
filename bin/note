@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+dir="$HOME/code/.notes"
+session_name="today"
+
+if tmux has-session -t "$session_name" 2>/dev/null; then
+	tmux switch-client -t "$session_name"
+else
+	tmux new-session -d -s "$session_name" -c "$dir" -n code
+	tmux new-window -t "$session_name": -c "$dir" -n cli
+	tmux new-window -t "$session_name": -c "$dir" -n server
+	tmux switch-client -t "$session_name"
+	tmux select-window -t "$session_name":code
+	tmux send-keys -t "$session_name":code "nvim" C-m
+fi

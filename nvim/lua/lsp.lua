@@ -97,5 +97,13 @@ vim.diagnostic.config({
 	},
 	signs = true,
 	underline = true,
-	update_in_insert = false,
+	update_in_insert = true,
+	float = {
+		focusable = false,
+		style = "minimal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
 })

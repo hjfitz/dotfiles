@@ -30,6 +30,9 @@ vim.api.nvim_set_keymap("n", "<Leader>q", ":vertical resize +10<CR>", { noremap 
 vim.api.nvim_set_keymap("n", "<Leader>r", ":vertical resize -10<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<Leader>e", ":resize +10<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<Leader>w", ":resize -10<CR>", { noremap = true })
+vim.keymap.set("n", "gl", function()
+  vim.diagnostic.open_float(nil, { focus = true })
+end, { desc = "Show diagnostics in a floating window" })
 
 -- Enable copy and paste from clipboard
 if vim.fn.has("wsl") == 1 then
