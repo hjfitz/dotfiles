@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+echo -n "Repo: "
+read -r repo
+
+if [[ "$repo" != *.git ]]; then
+	echo "Not cloning"
+	exit 1
+fi
+
+clone_dir=$(echo "$repo" |  awk -F'[:/]' '{sub(/\.git$/, "", $NF); print $NF}')
+
+pushd ~/code
+git clone "$repo" "$clone_dir"
+popd
+
+session_name=$clone_dir
+
+if tmux has-session -t "$session_name" 2>/dev/null; then
+	tmux switch-client -t "$session_name"
+else
+	tmux new-session -d -s "$session_name" -c "$dir" -n code
+	tmux new-window -t "$session_name": -c "$dir" -n cli
+	tmux new-window -t "$session_name": -c "$dir" -n server
+	tmux switch-client -t "$session_name"
+	tmux select-window -t "$session_name":code
+	tmux send-keys -t "$session_name":code "nvim" C-m
+fi
